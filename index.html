@@ -419,15 +419,15 @@ var TODAY=new Date('2026-06-27');
 function fmtImp(n){n=+n||0;return n>=1e8?(n/1e8).toFixed(1)+'억':n>=1e4?Math.round(n/1e4)+'만':n+'';}
 function days(d){return Math.round((TODAY-new Date(d))/864e5);}
 var ITEMS=[];
-YTV.forEach(function(v){ITEMS.push({gen:v[0],game:v[1],disp:v[1],ctry:'GL',imp:v[5]||0,views:v[5]||0,likes:v[6]||0,act:0,kind:'yt',type:'영상',date:v[4],src:'공식',vid:v[2],title:v[3],th:YTI+v[2]+'/hqdefault.jpg',added:'2026-06-27'});});
+YTV.forEach(function(v){ITEMS.push({gen:v[0],game:v[1],disp:v[1],ctry:'GL',imp:v[5]||0,views:v[5]||0,likes:v[6]||0,act:0,kind:'yt',type:'영상',date:v[4],src:'공식',vid:v[2],title:v[3],th:YTI+v[2]+'/hqdefault.jpg',added:(v[7]||'2026-06-27')});});
 D.forEach(function(r){var k=r[5];var type=(k==='img')?'이미지':'영상';var vid='';if(k==='yt'){var m=r[7].match(/([\w-]{11})\.mp4\.frame/);if(m)vid=m[1];}
- ITEMS.push({gen:r[0],game:r[1],disp:canon(r[1]),ctry:r[2],imp:r[3],act:r[4],kind:k,type:type,date:r[6],src:'AppMagic',vid:vid,title:canon(r[1])+' 광고',th:A+r[7],added:'2026-06-27'});});
+ ITEMS.push({gen:r[0],game:r[1],disp:canon(r[1]),ctry:r[2],imp:r[3],act:r[4],kind:k,type:type,date:r[6],src:'AppMagic',vid:vid,title:canon(r[1])+' 광고',th:A+r[7],added:(r[8]||'2026-06-27')});});
 ITEMS=ITEMS.filter(function(it,i){return ITEMS.findIndex(function(x){return x.th===it.th;})===i;});
 var KB={yt:{lb:'▶ 유튜브',bg:'#ff0000'},vid:{lb:'▶ 영상',bg:'#2b6fff'},img:{lb:'📷 이미지',bg:'#1a7f43'}};
 var GENRE='서브컬처',GAME=null,CTRY='',TYPE='',SORT='imp';
 function buildRail(){var r=document.getElementById('rail');r.innerHTML=Object.keys(GEN).map(function(g){return '<div class="r '+(g===GENRE?'on':'')+'" data-g="'+g+'"><span class="ic">'+GEN[g].ic+'</span>'+g+'</div>';}).join('');
  r.onclick=function(e){var d=e.target.closest('.r');if(!d)return;GENRE=d.dataset.g;GAME=null;buildRail();buildChans();render();};}
-function pool(){return ITEMS.filter(function(x){if(x.gen!==GENRE)return false;if(CTRY){if(CTRY==='글로벌(유튜브)'){if(x.src!=='공식')return false;}else if(x.src!=='공식'&&x.ctry!==CTRY)return false;}if(TYPE&&x.type!==TYPE)return false;return true;});}
+function pool(){return ITEMS.filter(function(x){if(x.gen!==GENRE)return false;if(CTRY){if(CTRY==='글로벌(유튜브)'){if(x.src!=='공식')return false;}else{if(x.src==='공식')return false;if(x.ctry!==CTRY)return false;}}if(TYPE&&x.type!==TYPE)return false;return true;});}
 function buildChans(){document.getElementById('gnm').textContent=GENRE+' 워치';document.getElementById('gsub').textContent='자사: '+GEN[GENRE].self;
  var d=pool();var gm={};d.forEach(function(x){if(!gm[x.disp])gm[x.disp]={n:0,imp:0,ico:iconFor(x.game)};gm[x.disp].n++;gm[x.disp].imp+=x.imp;});
  var games=Object.keys(gm).map(function(g){return{g:g,n:gm[g].n,imp:gm[g].imp,ico:gm[g].ico};}).sort(function(a,b){return b.imp-a.imp;});
@@ -441,7 +441,7 @@ function card(x){var k=KB[x.kind];var off=x.src==='공식';
  var metricR=off?fmtImp(x.views):fmtImp(x.imp);
  var metricL=off?(x.likes?'♥ '+fmtImp(x.likes):''):(x.act?'집행 '+x.act+'일':'');
  return '<div class="it" data-x=\''+encodeURIComponent(JSON.stringify({k:x.kind,vid:x.vid,th:x.th,t:x.title,g:x.disp,d:x.date,src:x.src}))+'\' onclick="openIt(this)">'+
- '<div class="th" style="background-image:url(\''+x.th+'\')">'+
+ '<div class="th lazy" data-bg="'+x.th+'">'+
  '<span class="kd" style="background:'+(off?'#ff0000':k.bg)+'">'+(off?'공식 유튜브':k.lb)+'</span>'+
  (metricR?'<span class="imp">'+(off?'▶':'')+metricR+'</span>':'')+
  (metricL?'<span class="run">'+metricL+'</span>':'')+
@@ -464,16 +464,35 @@ function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GA
  '<div class="bar"><span class="lbl">유형</span><div class="seg"><button class="'+(TYPE===''?'on':'')+'" onclick="setType(\'\')">전체</button><button class="'+(TYPE==='영상'?'on':'')+'" onclick="setType(\'영상\')">▶ 영상</button><button class="'+(TYPE==='이미지'?'on':'')+'" onclick="setType(\'이미지\')">📷 이미지</button></div>'+
  '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button></div></div>';
  var c=document.getElementById('content');
- c.innerHTML=d.length?'<div class="feed">'+d.map(card).join('')+'</div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';}
-var _log=[];
-function openUpd(){var by={};ITEMS.forEach(function(x){(by[x.added]=by[x.added]||[]).push(x);});var dates=Object.keys(by).sort().reverse();_log=[];
- var h='<div class="mdh"><div><div class="mdt">🆕 업데이트 내역</div><div class="mdm">매일 새 소재가 날짜별로 쌓입니다 · 최종 '+(dates[0]||'-')+'</div></div><button class="mx" onclick="closeM()">✕</button></div>';
- dates.forEach(function(dt){var items=by[dt];h+='<div class="updd">📅 '+dt+' <span>('+items.length+'건)</span></div><div class="updg">';
-  h+=items.slice(0,80).map(function(x){var i=_log.push(x)-1;return '<div class="updc" onclick="playLog('+i+')" title="'+x.disp+'"><div class="updt" style="background-image:url(\''+x.th+'\')">'+((x.kind==='yt'||x.kind==='vid')?'▶':'📷')+'</div><div class="updn">'+x.disp+'</div></div>';}).join('');h+='</div>';});
+ c.innerHTML=d.length?'<div class="feed">'+d.map(card).join('')+'</div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';lazyBg();}
+var _io;
+function lazyBg(){if(_io)_io.disconnect();if(!('IntersectionObserver'in window)){document.querySelectorAll('.th.lazy[data-bg]').forEach(function(d){d.style.backgroundImage="url('"+d.dataset.bg+"')";});return;}
+ _io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var d=e.target;d.style.backgroundImage="url('"+d.dataset.bg+"')";d.classList.remove('lazy');_io.unobserve(d);}});},{rootMargin:'400px'});
+ document.querySelectorAll('.th.lazy[data-bg]').forEach(function(d){_io.observe(d);});}
+var _log=[],_calM=null,_curDay='';
+function updBy(){var by={};ITEMS.forEach(function(x){(by[x.added]=by[x.added]||[]).push(x);});return by;}
+function openUpd(){var dates=Object.keys(updBy()).sort();if(!_calM){var mx=dates.slice(-1)[0]||'2026-06-28';_calM=new Date(+mx.slice(0,4),+mx.slice(5,7)-1,1);}renderCal();}
+function calMove(n){_calM=new Date(_calM.getFullYear(),_calM.getMonth()+n,1);renderCal();}
+function renderCal(){var by=updBy();var y=_calM.getFullYear(),m=_calM.getMonth();
+ var start=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+ var mn=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'][m];
+ var h='<div class="mdh"><div><div class="mdt">🗓️ 업데이트 내역</div><div class="mdm">새 소재가 잡힌 날만 표시 · 누적 '+Object.keys(by).length+'일 '+ITEMS.length+'건</div></div><button class="mx" onclick="closeM()">✕</button></div>';
+ h+='<div style="display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 12px"><button class="mx" onclick="calMove(-1)">‹</button><div style="font-weight:800;font-size:15px;min-width:120px;text-align:center">'+y+'년 '+mn+'</div><button class="mx" onclick="calMove(1)">›</button></div>';
+ h+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center">';
+ ['일','월','화','수','목','금','토'].forEach(function(w,i){h+='<div style="font-size:11px;font-weight:700;color:'+(i===0?'#e0518a':i===6?'#4f6df5':'#9ca3af')+';padding-bottom:2px">'+w+'</div>';});
+ for(var i=0;i<start;i++)h+='<div></div>';
+ for(var d=1;d<=dim;d++){var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');var it=by[ds];
+  if(it)h+='<div onclick="showDay(\''+ds+'\')" style="cursor:pointer;border-radius:9px;padding:6px 2px;background:#eef2ff;border:1px solid #c7d2fe"><div style="font-size:13px;font-weight:800;color:#3730a3">'+d+'</div><div style="font-size:9px;font-weight:800;color:#fff;background:#4f6df5;border-radius:8px;display:inline-block;padding:1px 6px;margin-top:2px">'+it.length+'</div></div>';
+  else h+='<div style="border-radius:9px;padding:6px 2px;color:#ccd1da;font-size:13px">'+d+'</div>';}
+ h+='</div><div style="font-size:11px;color:#9ca3af;margin-top:12px;text-align:center">파란 날짜를 클릭하면 그날 추가된 소재가 보입니다</div>';
  document.getElementById('md').innerHTML=h;document.getElementById('modal').style.display='flex';}
+function showDay(dt){_curDay=dt;var items=(updBy()[dt]||[]).slice().sort(function(a,b){return (b.imp||b.views||0)-(a.imp||a.views||0);});_log=[];
+ var h='<div class="mdh"><div><div class="mdt">📅 '+dt+'</div><div class="mdm">이 날 추가된 소재 '+items.length+'건</div></div><button class="mx" onclick="renderCal()">← 달력</button></div><div class="updg">';
+ h+=items.map(function(x){var i=_log.push(x)-1;return '<div class="updc" onclick="playLog('+i+')" title="'+x.disp+'"><div class="updt" style="background-image:url(\''+x.th+'\')">'+((x.kind==='yt'||x.kind==='vid')?'▶':'📷')+'</div><div class="updn">'+x.disp+'</div></div>';}).join('');
+ h+='</div>';document.getElementById('md').innerHTML=h;}
 function playLog(i){var x=_log[i];if(x.kind==='yt'&&x.vid){window.open('https://www.youtube.com/watch?v='+x.vid,'_blank','noopener');return;}
  var inner=x.kind==='vid'?'<video src="'+x.th.replace(/\.frame\.[\d.]+\.jpg$/,'')+'" controls autoplay playsinline></video>':'<img src="'+x.th+'"><div class="mnote">'+(x.kind==='img'?'📷 이미지 광고':'유튜브 영상 소재')+'</div>';
- document.getElementById('md').innerHTML='<div class="mdh"><div><div class="mdt">'+x.disp+'</div><div class="mdm">'+x.title+' · '+x.date+'</div></div><button class="mx" onclick="openUpd()">← 목록</button></div>'+inner;}
+ document.getElementById('md').innerHTML='<div class="mdh"><div><div class="mdt">'+x.disp+'</div><div class="mdm">'+x.title+' · '+x.date+'</div></div><button class="mx" onclick="showDay(\''+_curDay+'\')">← 목록</button></div>'+inner;}
 document.getElementById('updBtn').onclick=openUpd;
 buildRail();buildChans();render();
 </script>
