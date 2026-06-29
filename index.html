@@ -1601,12 +1601,13 @@ function openIt(el){var x=JSON.parse(decodeURIComponent(el.dataset.x));var md=do
  document.getElementById('modal').style.display='flex';}
 function closeM(){document.getElementById('modal').style.display='none';document.getElementById('md').innerHTML='';}
 function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GAME;});
- d.sort(function(a,b){return SORT==='act'?(b.act-a.act):SORT==='date'?b.date.localeCompare(a.date):(b.imp-a.imp);});
+ if(SORT==='score'){var _lf=function(x){return x.src==='공식'?Math.max(0,days(x.date)):(x.act||0);};var _mi=Math.max(1,...d.map(function(x){return x.imp||0;})),_ma=Math.max(1,...d.map(_lf));d.forEach(function(x){x._sc=Math.sqrt(((x.imp||0)/_mi)*(_lf(x)/_ma));});}
+ d.sort(function(a,b){return SORT==='score'?(b._sc-a._sc):SORT==='act'?(b.act-a.act):SORT==='date'?b.date.localeCompare(a.date):(b.imp-a.imp);});
  var yc=d.filter(function(x){return x.src==='공식';}).length,ac=d.length-yc;
  document.getElementById('mh').innerHTML='<h1>'+(GAME||GENRE+' 전체')+' <span class="tag" style="background:'+GEN[GENRE].c+'">'+GENRE+'</span></h1>'+
  '<div class="meta">'+(yc?'공식 유튜브 '+yc+' · ':'')+'AppMagic 광고 '+ac+' · '+(new Set(d.map(function(x){return x.disp;}))).size+'개 게임</div>'+
  '<div class="bar"><span class="lbl">유형</span><div class="seg"><button class="'+(TYPE===''?'on':'')+'" onclick="setType(\'\')">전체</button><button class="'+(TYPE==='영상'?'on':'')+'" onclick="setType(\'영상\')">▶ 영상</button><button class="'+(TYPE==='이미지'?'on':'')+'" onclick="setType(\'이미지\')">📷 이미지</button></div>'+
- '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button></div></div>';
+ '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='score'?'on':'')+'" onclick="setSort(\'score\')">종합</button><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button></div></div>';
  var c=document.getElementById('content');
  c.innerHTML=d.length?'<div class="feed">'+d.map(card).join('')+'</div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';lazyBg();}
 var _io;
