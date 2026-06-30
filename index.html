@@ -48,7 +48,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun 
 .th .kd{position:absolute;top:6px;left:6px;font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px;color:#fff;}
 .th .imp{position:absolute;bottom:6px;right:6px;background:rgba(79,109,245,.95);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:5px;}
 .th .run{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.62);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;}
-.th .new{position:absolute;top:6px;right:6px;background:#e0518a;color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:5px;}
+.th .new{position:absolute;top:6px;right:6px;background:linear-gradient(135deg,#ff2d78,#ff6a00);color:#fff;font-size:12px;font-weight:900;letter-spacing:.5px;padding:3px 9px;border-radius:6px;box-shadow:0 2px 9px rgba(255,45,120,.7);animation:newpulse 1.4s ease-in-out infinite;z-index:4;}
+.it.isnew{border:2px solid #ff2d78;box-shadow:0 0 0 3px rgba(255,45,120,.2);}
+.it.isnew:hover{box-shadow:0 8px 18px rgba(28,35,66,.16),0 0 0 3px rgba(255,45,120,.32);transform:translateY(-2px);}
+@keyframes newpulse{0%,100%{transform:scale(1);box-shadow:0 2px 9px rgba(255,45,120,.6);}50%{transform:scale(1.1);box-shadow:0 2px 15px rgba(255,45,120,.95);}}
 .ib{padding:8px 10px;}
 .itt{font-size:12px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .im{font-size:10.5px;color:#9ca3af;margin-top:4px;}
@@ -215,6 +218,57 @@ if(L.p)o+=pill(L.p,'Google Play',SVG_PLAY,'#fff','#202124','1px solid #dadce0');
 if(L.y)o+=pill(L.y,'유튜브',SVG_YT,'#FF0000','#fff','none');
 return o?'<div style="display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin:0 0 12px 0">'+o+'</div>':'';}
 var D=[
+["서브컬처","우마무스메","JP",1590908,180,"yt","2025-10-12","0/01/01c/01cd/01cdc/01cdcc/01cdcc64-9494-0860-f997-d7a81cc52cf6/MfBd_OMdMzQ.mp4.frame.3.77.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",603185,118,"vid","2025-12-17","8/84/84c/84c1/84c1c/84c1cb/84c1cb57-f005-4b8e-9bda-157aaa6211d5/6e68d492-04f6-422d-8a0d-9e6edff3c6c9.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",596115,159,"yt","2025-11-03","9/9e/9ee/9ee5/9ee5d/9ee5d7/9ee5d763-e228-02d6-e3ea-8048a2ea21cc/0SzSw1p1v5I.mp4.frame.4.27.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",577660,48,"vid","2025-10-27","6/63/635/635b/635b8/635b80/635b80f4-f7c0-46e8-a7f1-738383901076/6975b384-9b5c-43b0-b18f-f5be57f7a5c0.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",568925,285,"yt","2025-07-03","c/cc/cc3/cc35/cc357/cc3571/cc357140-48c5-01f2-ec8e-44f3bbc7b9cd/xBB8lCo1hUU.mp4.frame.3.77.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",557830,18,"vid","2025-09-18","0/06/06c/06c3/06c38/06c38e/06c38e6e-c320-40ff-b0fc-882eafa6f9df/a21670d9-95bf-49fa-8972-ba708d8a9491.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",546455,40,"vid","2025-11-04","6/64/643/643d/643dd/643dd9/643dd98d-96a1-41ac-8d60-1405731925f5/ae9635c6-f595-44b3-b421-4fa730cbe114.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",541965,48,"vid","2025-10-27","c/ca/cae/cae5/cae5a/cae5ac/cae5ac18-28a7-4b8f-ba41-8c90b8634762/b1eb98e9-6369-4e24-a655-bf93e114b8a3.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",536368,7,"vid","2025-09-18","9/93/933/9335/93359/933591/933591ce-66e7-4bbc-9502-a48aecbe5715/e6f96300-b2c5-42bf-81a2-b94a62c2f899.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",530993,48,"vid","2025-10-27","a/ab/ab1/ab18/ab18c/ab18c2/ab18c26c-4e5f-4aad-a198-084593f58faf/60366702-a358-4d09-83ea-83a142ed4855.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",511010,48,"vid","2025-10-27","3/30/302/302c/302ce/302ce7/302ce71e-2229-405f-a095-576088211fd4/a3d31644-54eb-45fe-b2b9-67389154cd16.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",510765,40,"vid","2025-11-04","8/8a/8ad/8adb/8adb9/8adb97/8adb9728-2102-46d8-8d54-d6df789ae6d2/a1ce8b8c-75c8-4438-9f49-7aa6b5fdc4f0.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",509971,287,"yt","2025-07-01","7/78/78b/78b7/78b77/78b777/78b7772c-701d-0410-f488-7c9e13cedb15/WyFFeFpSfZI.mp4.frame.4.68.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",506289,74,"vid","2026-01-30","1/1d/1d2/1d29/1d29d/1d29d1/1d29d1dd-30cf-4994-a399-5c88d25c5531/8f49f92d-4283-4e65-980e-a54483d6ed4c.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",505773,18,"vid","2025-09-18","a/a6/a6b/a6bc/a6bc6/a6bc6d/a6bc6dd0-94d0-4d15-a1c3-b29b309657c7/47d2ae9d-c80c-4250-a5fc-a0be9477ac21.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",503908,19,"vid","2025-09-18","f/fc/fcf/fcf0/fcf08/fcf08b/fcf08b0d-d53e-470f-b24c-548bf9b2a468/91222c34-bd2e-41b9-a583-39afa4028454.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",493637,19,"vid","2025-10-15","8/84/847/847a/847a8/847a8d/847a8dc0-5fd3-48db-a2da-3c4420b88cd8/3fdca2e5-19cf-4982-8d6d-d991527a72c8.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",488054,19,"vid","2025-09-18","9/9f/9f2/9f23/9f231/9f2313/9f23139a-6873-43e2-802b-4a2af8d26c4b/38c48b1b-8d4c-4732-8280-3cd6558c45fb.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",481930,48,"vid","2025-10-27","f/fe/fec/fec4/fec45/fec453/fec45397-49c7-4a35-a358-76545ccf6ec1/c87003e8-944b-42a7-8e5d-454d34290799.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",477345,24,"vid","2025-09-26","c/c4/c44/c441/c441d/c441d2/c441d2d2-1207-4fbc-9974-bfd7323dd892/f673d0bd-9381-434a-a693-385c2ecd73c1.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",463710,15,"vid","2025-10-03","f/ff/ffc/ffca/ffca9/ffca96/ffca9610-76d3-42be-b376-5565aea9708b/6aad1686-d314-49ef-a555-06d92b1127a9.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",462686,40,"vid","2025-11-04","4/46/46b/46b7/46b77/46b77a/46b77aee-f8c9-4c13-a878-4d062e593361/c82fd0fd-b745-404f-8ab0-1e89dd77b87d.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",457645,18,"vid","2025-10-08","8/81/81f/81f3/81f35/81f35f/81f35f6b-2e32-44fb-b231-db7955f94b35/a92fb40c-e4df-4be6-b7ef-131bdda41e4a.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",456687,19,"vid","2025-09-18","a/a5/a59/a59d/a59da/a59da2/a59da21f-33e0-4cb7-92d4-b283005d45a5/d3224056-657d-458a-b689-32c5a630f60e.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",453648,19,"vid","2025-10-15","d/d2/d2f/d2f7/d2f7c/d2f7cd/d2f7cd8c-4ad2-4f1e-9f6f-dcac90037a76/b960dc54-f97b-448e-92d6-156d2e91e127.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",449765,28,"yt","2025-07-14","0/09/09a/09ac/09acf/09acf1/09acf12d-4465-0476-e8df-09c30474c4b6/5k-4_fJbUOw.mp4.frame.2.76.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",448788,15,"vid","2025-10-03","6/60/609/609c/609c8/609c89/609c8933-e6ca-4062-a4af-5d3487ed1fcf/b266fa6b-4a00-4ace-b41c-a8d47d5721f3.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",444695,110,"vid","2025-12-25","2/22/22c/22c6/22c62/22c625/22c625e5-b0fa-4028-97af-a9e433d96364/2c7ce896-1126-4f50-83dd-36950d9b0432.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","우마무스메","JP",442985,17,"vid","2025-10-08","8/82/82f/82f2/82f2f/82f2fe/82f2fe7a-c414-4e22-a37e-0a92a9cb0702/5844a365-5c4f-40db-8cf7-db875619bd38.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",37852,12,"img","2025-09-22","c/c0/c02/c02d/c02d4/c02d4e/c02d4e1a-bea6-0d97-e1c9-8a2d9fd8ccb6/a66634d4-7594-42c0-949f-6cdd2cde79aa.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",36579,36,"img","2025-09-22","b/b6/b62/b624/b624c/b624c5/b624c582-9fda-08e5-ea2c-b69adc013ffb/68d73a73-4c08-49df-b758-797327aec002.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",36372,25,"vid","2026-01-29","d/d9/d9c/d9c4/d9c48/d9c48c/d9c48cec-25c8-42d7-b593-57e2d6b56645/586b0272-37d3-43f8-be77-f43abb3f25f0.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",35711,25,"img","2025-08-07","9/99/996/9969/9969a/9969a0/9969a041-3e03-44b2-8b65-f6f61c2ac7eb/f5078d8c-8c02-4989-aa95-baa098e1ecb6.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",34486,35,"img","2025-09-25","0/0e/0e4/0e4b/0e4b5/0e4b5f/0e4b5f67-7400-00f8-fdd2-858213119d43/fac0af53-611c-43cd-9670-1174006055a8.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",33951,84,"img","2025-10-30","8/8e/8e0/8e01/8e01f/8e01f9/8e01f966-1384-0d87-fa34-982b7f142156/0e161e17-bedd-484a-8ca8-0731ef3b6df4.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",32286,35,"vid","2026-01-29","a/ac/acf/acff/acffa/acffa4/acffa4b3-c7fe-43c2-a42f-aed2cea8ebaa/9842c11a-31f1-4cfd-933e-1791b81e5c3c.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",31412,51,"vid","2026-03-08","2/24/24c/24c6/24c69/24c69e/24c69e28-5870-4ca5-986b-1af941e46904/15705a76-2933-4436-8fe5-cf375e798f3f.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",31071,69,"img","2026-03-06","2/20/20e/20e5/20e59/20e597/20e597d5-44fe-0923-fc43-35ba5def2a2c/d373e9ae-ed67-4342-966a-ca32e3756bec.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",31069,40,"vid","2026-03-11","5/59/59a/59a9/59a9a/59a9a1/59a9a1d4-21ae-4529-887f-e273a0361b1d/545f99ae-261c-4c8d-81c2-3fd53fbf5a0f.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",30594,32,"vid","2026-04-14","7/7a/7ad/7add/7add5/7add59/7add594e-b675-425e-b1cd-823b5235990b/b9d306d2-2222-4b0e-9d1e-5104d7399a25.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",30503,19,"img","2026-03-04","4/41/413/413c/413c4/413c49/413c4937-4ed0-0d41-f698-c6d20e7dab59/d80567fb-b0c3-46f1-baa1-dfb61dd497e9.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",29424,9,"img","2025-07-14","d/d4/d43/d433/d4334/d43346/d43346cf-5842-0f3e-ea8b-8c91051d7bae/3fb08a8d-3f67-440d-8011-c5051cb4a5fb.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",28549,21,"img","2025-11-18","5/57/57b/57b6/57b6c/57b6c1/57b6c17e-50c7-0ad6-e0b5-79bc600afc01/5768deb8-41df-4367-85cd-3fe5283d859e.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",27910,32,"vid","2026-02-02","c/c3/c38/c380/c380d/c380d1/c380d118-d3dc-4892-97b3-76da4caf7eb9/db4f2318-e85c-4165-bd23-48c815d864ca.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",27618,9,"img","2025-08-21","1/1d/1d9/1d94/1d944/1d9444/1d9444cf-97cb-01ca-fa80-d1b61f1bdd9e/d95af5d0-bea6-4314-82ac-9d0aef4d70ce.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",26322,51,"vid","2026-03-12","5/5c/5c4/5c4c/5c4c4/5c4c44/5c4c446d-36a0-49db-8a01-6573ccfef8ec/5415a088-9707-43e5-8b10-879107619eda.mp4.frame.0.00.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",25590,21,"img","2026-02-11","9/9f/9f6/9f6f/9f6f6/9f6f6d/9f6f6d4e-fa62-0bd2-f0c3-ee28d69b6c8d/0462ddaf-5303-4189-9527-827c178a4444.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",24311,15,"img","2025-09-25","b/b3/b3c/b3c5/b3c5b/b3c5b6/b3c5b601-6ef9-039d-e7a7-d01e1474f1ef/e7fe0ce3-493a-4fa6-ac2c-00380f0ef20e.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",24235,37,"img","2025-08-06","f/fd/fd6/fd61/fd61a/fd61a4/fd61a436-7a94-0e05-ffba-0362a6df2393/fa32d14b-79ed-4566-b4e8-d6510570403b.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",23955,48,"img","2025-07-23","2/2c/2cd/2cd7/2cd74/2cd74c/2cd74c88-9577-090c-f24d-bc17c0864ec9/bd52bc06-ee37-4a88-8cc9-ff226e9e35f1.jpg","2026-06-30"],
+["서브컬처","리버스:1999","CN",23727,37,"img","2025-08-06","2/29/295/2951/29517/295176/29517605-694c-0779-e773-cf95bf73519d/1171cb5e-a22d-4028-8ab4-80c178f5c04c.jpg","2026-06-30"],
 ["서브컬처","원신","CN",432214,163,"yt","2025-10-24","9/93/938/9386/9386a/9386aa/9386aa5c-9013-001a-fdf3-a72e2eea35dd/AZq_5CTn7dA.mp4.frame.1.52.jpg","2026-06-30"],
 ["서브컬처","원신","CN",398117,220,"yt","2025-10-30","8/8c/8c6/8c62/8c620/8c620e/8c620e60-2f1d-029d-f909-7798b4977ef6/3160kf47hRM.mp4.frame.4.16.jpg","2026-06-30"],
 ["서브컬처","원신","CN",384475,124,"yt","2025-12-06","5/5c/5c5/5c5a/5c5ae/5c5ae8/5c5ae885-ab50-0634-f3b5-3e83c3ac5112/drJPiWCZbUE.mp4.frame.1.51.jpg","2026-06-30"],
@@ -2199,7 +2253,8 @@ var D=[
 ["SF","Nova: Space Armada","SG",38038,16,"img","2026-06-09","2/2a/2ab/2abc/2abca/2abca6/2abca6c4-8592-0e1e-ec98-72ce32a45c1c/6411dafc-8ea0-466f-a2c9-46c21da0bfcc.jpg","2026-06-28"],
 ["SF","Nova: Space Armada","SG",36812,16,"img","2026-06-09","5/5b/5b3/5b3b/5b3b9/5b3b97/5b3b972c-f282-08a3-f2ea-4deaed5684a3/75850979-2807-4325-9b99-c6214b108611.jpg","2026-06-28"],
 ];
-var TODAY=new Date('2026-06-27');
+var TODAY=new Date();
+var todayStr=TODAY.getFullYear()+'-'+String(TODAY.getMonth()+1).padStart(2,'0')+'-'+String(TODAY.getDate()).padStart(2,'0');
 function fmtImp(n){n=+n||0;return n>=1e8?(n/1e8).toFixed(1)+'억':n>=1e4?Math.round(n/1e4)+'만':n+'';}
 function days(d){return Math.round((TODAY-new Date(d))/864e5);}
 var ITEMS=[];
@@ -2225,12 +2280,13 @@ function setType(t){TYPE=t;render();}function setSort(s){SORT=s;render();}
 function card(x){var k=KB[x.kind];var off=x.src==='공식';
  var metricR=off?fmtImp(x.views):fmtImp(x.imp);
  var metricL=off?(x.likes?'♥ '+fmtImp(x.likes):''):(x.act?'집행 '+x.act+'일':'');
- return '<div class="it" data-x=\''+encodeURIComponent(JSON.stringify({k:x.kind,vid:x.vid,th:x.th,t:x.title,g:x.disp,d:x.date,src:x.src}))+'\' onclick="openIt(this)">'+
+ var isNew=(x.added&&x.added===todayStr);
+ return '<div class="it'+(isNew?' isnew':'')+'" data-x=\''+encodeURIComponent(JSON.stringify({k:x.kind,vid:x.vid,th:x.th,t:x.title,g:x.disp,d:x.date,src:x.src}))+'\' onclick="openIt(this)">'+
  '<div class="th lazy" data-bg="'+x.th+'">'+
  '<span class="kd" style="background:'+(off?'#ff0000':k.bg)+'">'+(off?'공식 유튜브':k.lb)+'</span>'+
  (metricR?'<span class="imp">'+(off?'▶':'')+metricR+'</span>':'')+
  (metricL?'<span class="run">'+metricL+'</span>':'')+
- (x.added&&x.added===NEWADD?'<span class="new">NEW</span>':'')+
+ (isNew?'<span class="new">NEW</span>':'')+
  ((x.kind==='yt'||x.kind==='vid')?'<span class="pl">▶</span>':'')+
  '</div><div class="ib"><div class="itt">'+x.title+'</div><div class="im">'+(CC[x.ctry]||'')+' '+x.disp+' · '+x.date+'</div></div></div>';}
 function openIt(el){var x=JSON.parse(decodeURIComponent(el.dataset.x));var md=document.getElementById('md');
