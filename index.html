@@ -2944,6 +2944,7 @@ var D=[
 ];
 var TODAY=new Date();
 var todayStr=TODAY.getFullYear()+'-'+String(TODAY.getMonth()+1).padStart(2,'0')+'-'+String(TODAY.getDate()).padStart(2,'0');
+var CUTOFF=(function(){var d=new Date(TODAY);d.setDate(d.getDate()-2);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
 function fmtImp(n){n=+n||0;return n>=1e8?(n/1e8).toFixed(1)+'억':n>=1e4?Math.round(n/1e4)+'만':n+'';}
 function days(d){return Math.round((TODAY-new Date(d))/864e5);}
 var ITEMS=[];
@@ -2953,7 +2954,7 @@ D.forEach(function(r){var k=r[5];var type=(k==='img')?'이미지':'영상';var v
 var NEWADD=ITEMS.reduce(function(m,x){return (x.added&&x.added>m)?x.added:m;},'');
 (function(){var _s={},_o=[];for(var i=0;i<ITEMS.length;i++){var t=ITEMS[i].th;if(!_s[t]){_s[t]=1;_o.push(ITEMS[i]);}}ITEMS=_o;})();
 var KB={yt:{lb:'▶ 유튜브',bg:'#ff0000'},vid:{lb:'▶ 영상',bg:'#2b6fff'},img:{lb:'📷 이미지',bg:'#1a7f43'}};
-var GENRE='서브컬처',GAME=null,CTRY='',TYPE='',SORT='imp';
+var GENRE='서브컬처',GAME=null,CTRY='',TYPE='',SORT='imp',NEWONLY=false;
 function buildRail(){var r=document.getElementById('rail');r.innerHTML=Object.keys(GEN).map(function(g){return '<div class="r '+(g===GENRE?'on':'')+'" data-g="'+g+'"><span class="ic">'+GEN[g].ic+'</span>'+g+'</div>';}).join('');
  r.onclick=function(e){var d=e.target.closest('.r');if(!d)return;GENRE=d.dataset.g;GAME=null;buildRail();buildChans();render();};}
 function pool(){return ITEMS.filter(function(x){if(x.gen!==GENRE)return false;if(CTRY){if(CTRY==='글로벌(유튜브)'){if(x.src!=='공식')return false;}else{if(x.src==='공식')return false;if(x.ctry!==CTRY)return false;}}if(TYPE&&x.type!==TYPE)return false;return true;});}
@@ -2965,7 +2966,7 @@ function buildChans(){document.getElementById('gnm').textContent=GENRE+' 워치'
  var cl=document.getElementById('chlist');cl.innerHTML=h;
  cl.onclick=function(e){if(e.target.closest('.allch')){GAME=null;buildChans();render();return;}var c=e.target.closest('.ch');if(!c)return;GAME=c.dataset.g;buildChans();render();};}
 document.getElementById('ctry').onchange=function(e){CTRY=e.target.value;GAME=null;buildChans();render();};
-function setType(t){TYPE=t;render();}function setSort(s){SORT=s;render();}
+function setType(t){TYPE=t;render();}function setSort(s){SORT=s;render();}function setNew(v){NEWONLY=v;render();}
 function card(x){var k=KB[x.kind];var off=x.src==='공식';
  var metricR=off?fmtImp(x.views):fmtImp(x.imp);
  var metricL=off?(x.likes?'♥ '+fmtImp(x.likes):''):(x.act?'집행 '+x.act+'일':'');
@@ -2987,13 +2988,14 @@ function openIt(el){var x=JSON.parse(decodeURIComponent(el.dataset.x));var md=do
  document.getElementById('modal').style.display='flex';}
 function closeM(){document.getElementById('modal').style.display='none';document.getElementById('md').innerHTML='';}
 function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GAME;});
+ if(NEWONLY)d=d.filter(function(x){return x.added&&x.added>=CUTOFF;});
  if(SORT==='score'){var _lf=function(x){return x.src==='공식'?Math.max(0,days(x.date)):(x.act||0);};var _mi=Math.max(1,...d.map(function(x){return x.imp||0;})),_ma=Math.max(1,...d.map(_lf));d.forEach(function(x){x._sc=Math.sqrt(((x.imp||0)/_mi)*(_lf(x)/_ma));});}
- d.sort(function(a,b){return SORT==='score'?(b._sc-a._sc):SORT==='act'?(b.act-a.act):SORT==='date'?b.date.localeCompare(a.date):(b.imp-a.imp);});
+ d.sort(function(a,b){return SORT==='score'?(b._sc-a._sc):SORT==='act'?(b.act-a.act):SORT==='added'?(a.added===b.added?(b.imp-a.imp):(b.added||'').localeCompare(a.added||'')):SORT==='date'?b.date.localeCompare(a.date):(b.imp-a.imp);});
  var yc=d.filter(function(x){return x.src==='공식';}).length,ac=d.length-yc;
  document.getElementById('mh').innerHTML=(GAME?linkIcons(GAME):'')+'<h1>'+(GAME||GENRE+' 전체')+' <span class="tag" style="background:'+GEN[GENRE].c+'">'+GENRE+'</span></h1>'+
  '<div class="meta">'+(yc?'공식 유튜브 '+yc+' · ':'')+'AppMagic 광고 '+ac+' · '+(new Set(d.map(function(x){return x.disp;}))).size+'개 게임</div>'+
- '<div class="bar"><span class="lbl">유형</span><div class="seg"><button class="'+(TYPE===''?'on':'')+'" onclick="setType(\'\')">전체</button><button class="'+(TYPE==='영상'?'on':'')+'" onclick="setType(\'영상\')">▶ 영상</button><button class="'+(TYPE==='이미지'?'on':'')+'" onclick="setType(\'이미지\')">📷 이미지</button></div>'+
- '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='score'?'on':'')+'" onclick="setSort(\'score\')">종합</button><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button></div></div>';
+ '<div class="bar"><span class="lbl">유형</span><div class="seg"><button class="'+(TYPE===''?'on':'')+'" onclick="setType(\'\')">전체</button><button class="'+(TYPE==='영상'?'on':'')+'" onclick="setType(\'영상\')">▶ 영상</button><button class="'+(TYPE==='이미지'?'on':'')+'" onclick="setType(\'이미지\')">📷 이미지</button></div><span class="lbl">신규</span><div class="seg"><button class="'+(NEWONLY?'on':'')+'" onclick="setNew('+(NEWONLY?'false':'true')+')">✨ 최근 3일</button></div>'+
+ '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='score'?'on':'')+'" onclick="setSort(\'score\')">종합</button><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button><button class="'+(SORT==='added'?'on':'')+'" onclick="setSort(\'added\')">🆕 수집일순</button></div></div>';
  var c=document.getElementById('content');
  c.innerHTML=d.length?'<div class="feed">'+d.map(card).join('')+'</div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';lazyBg();}
 var _io;
