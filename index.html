@@ -4682,10 +4682,11 @@ function card(x){var k=KB[x.kind];var off=x.src==='공식';
  '</div><div class="ib"><div class="itt">'+x.title+'</div><div class="im">'+(CC[x.ctry]||'')+' '+x.disp+' · '+x.date+'</div></div></div>';}
 function openIt(el){var x=JSON.parse(decodeURIComponent(el.dataset.x));var md=document.getElementById('md');
  if(x.k==='yt'){if(x.vid){window.open('https://www.youtube.com/watch?v='+x.vid,'_blank','noopener');return;}}
- var inner;if(x.k==='vid'){inner='<video src="'+x.th.replace(/\.frame\.[\d.]+\.jpg$/,'')+'" controls autoplay playsinline></video>';}
+ var inner;if(x.k==='vid'){var _b=x.th.replace(/\.frame\.[\d.]+\.jpg$/,'');var _f=_b.split('/').pop();var _s=(/^\d+_\d+_\d+_n\.(mp4|webm)$/.test(_f))?('https://adint-assets.appmagic.rocks/fblib/v/t42.1790-2/'+_f):_b;inner='<video id="mv0" src="'+_s+'" controls autoplay playsinline></video>';}
  else if(x.k==='yt'){inner='<img src="'+x.th+'"><div class="mnote">유튜브 영상 소재</div>';}
  else{inner='<img src="'+x.th+'"><div class="mnote">📷 이미지 광고</div>';}
  md.innerHTML='<div class="mdh"><div><div class="mdt">'+x.g+'</div><div class="mdm">'+x.t+' · '+x.d+' · '+x.src+'</div></div><button class="mx" onclick="closeM()">✕ 닫기</button></div>'+inner;
+ var _mv=document.getElementById('mv0');if(_mv){_mv.onerror=function(){_mv.outerHTML='<img src="'+x.th+'"><div class="mnote">재생용 영상이 없어 정지컷으로 표시합니다</div>';};}
  document.getElementById('modal').style.display='flex';}
 function closeM(){document.getElementById('modal').style.display='none';document.getElementById('md').innerHTML='';}
 function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GAME;});
