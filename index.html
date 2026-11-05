@@ -21176,7 +21176,7 @@ function openIt(el){var x=JSON.parse(decodeURIComponent(el.dataset.x));var md=do
 function closeM(){document.getElementById('modal').style.display='none';document.getElementById('md').innerHTML='';}
 function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GAME;});
  if(NEWONLY)d=d.filter(function(x){return x.added&&x.added>=CUTOFF;});
- if(SORT==='score'){var _lf=function(x){return x.src==='공식'?Math.max(0,days(x.date)):(x.act||0);};var _mi=Math.max(1,...d.map(function(x){return x.imp||0;})),_ma=Math.max(1,...d.map(_lf));d.forEach(function(x){x._sc=Math.sqrt(((x.imp||0)/_mi)*(_lf(x)/_ma));});}
+ if(SORT==='score'){var _lf=function(x){return x.src==='공식'?Math.max(0,days(x.date)):(x.act||0);};var _mi=d.reduce(function(m,x){return Math.max(m,x.imp||0);},1),_ma=d.reduce(function(m,x){return Math.max(m,_lf(x));},1);d.forEach(function(x){x._sc=Math.sqrt(((x.imp||0)/_mi)*(_lf(x)/_ma));});}
  d.sort(function(a,b){return SORT==='score'?(b._sc-a._sc):SORT==='act'?(b.act-a.act):SORT==='added'?(a.added===b.added?(b.imp-a.imp):(b.added||'').localeCompare(a.added||'')):SORT==='date'?b.date.localeCompare(a.date):(b.imp-a.imp);});
  var yc=d.filter(function(x){return x.src==='공식';}).length,ac=d.length-yc;
  document.getElementById('mh').innerHTML=(GAME?linkIcons(GAME):'')+'<h1>'+(GAME||GENRE+' 전체')+' <span class="tag" style="background:'+GEN[GENRE].c+'">'+GENRE+'</span></h1>'+
@@ -21184,14 +21184,32 @@ function render(){var d=pool();if(GAME)d=d.filter(function(x){return x.disp===GA
  '<div class="bar"><span class="lbl">유형</span><div class="seg"><button class="'+(TYPE===''?'on':'')+'" onclick="setType(\'\')">전체</button><button class="'+(TYPE==='영상'?'on':'')+'" onclick="setType(\'영상\')">▶ 영상</button><button class="'+(TYPE==='이미지'?'on':'')+'" onclick="setType(\'이미지\')">📷 이미지</button></div><span class="lbl">신규</span><div class="seg"><button class="'+(NEWONLY?'on':'')+'" onclick="setNew('+(NEWONLY?'false':'true')+')">✨ 최근 3일</button></div>'+
  '<span class="lbl">정렬</span><div class="seg"><button class="'+(SORT==='score'?'on':'')+'" onclick="setSort(\'score\')">종합</button><button class="'+(SORT==='imp'?'on':'')+'" onclick="setSort(\'imp\')">노출/조회수</button><button class="'+(SORT==='act'?'on':'')+'" onclick="setSort(\'act\')">집행기간</button><button class="'+(SORT==='date'?'on':'')+'" onclick="setSort(\'date\')">최신</button><button class="'+(SORT==='added'?'on':'')+'" onclick="setSort(\'added\')">🆕 수집일순</button></div></div>';
  var c=document.getElementById('content');
- c.innerHTML=d.length?'<div class="feed">'+d.map(card).join('')+'</div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';lazyBg();}
-var _io;
+ /* 2026-11-05 성능: 카드를 한 번에 다 그리지 않고 PAGE장씩 스크롤에 맞춰 이어 붙임(필터 전환 1.4s→수십ms) */
+ _cur=d;_shown=0;if(_mo){_mo.disconnect();_mo=null;}
+ c.innerHTML=d.length?'<div class="feed"></div><div id="more" style="text-align:center;padding:18px 0 28px;color:#9ca3af;font-size:13px"></div>':'<div class="empty">해당 조건 소재가 없습니다.</div>';
+ var _mn=c.closest('.main');if(_mn&&_mn.scrollHeight>_mn.clientHeight)_mn.scrollTop=0;lazyBg(true);if(d.length)renderMore();}
+var _io,_mo,_cur=[],_shown=0,PAGE=120,_nmT=0;
+function _chkMore(){var m=document.getElementById('more');if(m&&_shown<_cur.length&&m.getBoundingClientRect().top<window.innerHeight+2000)renderMore();}
+function _nearMore(){_chkMore();clearTimeout(_nmT);_nmT=setTimeout(_chkMore,120);}
+(function(){var mn=document.querySelector('.main');if(mn)mn.addEventListener('scroll',_nearMore,{passive:true});window.addEventListener('scroll',_nearMore,{passive:true});})();
+function renderMore(){var f=document.querySelector('#content .feed');if(!f||_shown>=_cur.length)return;var n=Math.min(_cur.length,_shown+PAGE);
+ f.insertAdjacentHTML('beforeend',_cur.slice(_shown,n).map(card).join(''));_shown=n;lazyBg(false);
+ var m=document.getElementById('more');if(!m)return;
+ if(_shown>=_cur.length){m.textContent='전체 '+_cur.length.toLocaleString()+'건 모두 표시';if(_mo){_mo.disconnect();_mo=null;}return;}
+ m.innerHTML=_shown.toLocaleString()+' / '+_cur.length.toLocaleString()+'건 표시 중 · <button onclick="renderMore()" style="margin-left:6px;padding:5px 12px;border-radius:8px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;font-weight:700;cursor:pointer">더 보기</button>';
+ if('IntersectionObserver'in window&&!_mo){_mo=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting;}))renderMore();},{rootMargin:'1200px'});_mo.observe(m);}
+ if(m.getBoundingClientRect().top<window.innerHeight+2000)setTimeout(renderMore,0);}
 function lzset(d){var u=d.dataset.bg;var im=new Image();im.onload=function(){d.style.backgroundImage="url('"+u+"')";d.classList.remove('lazy');};im.onerror=function(){var it=d.closest('.it');if(it)it.remove();};im.src=u;}
-function lazyBg(){if(_io)_io.disconnect();if(!('IntersectionObserver'in window)){document.querySelectorAll('.th.lazy[data-bg]').forEach(lzset);return;}
- _io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){lzset(e.target);_io.unobserve(e.target);}});},{rootMargin:'400px'});
- document.querySelectorAll('.th.lazy[data-bg]').forEach(function(d){_io.observe(d);});}
+function lazyBg(reset){var els=document.querySelectorAll('.th.lazy[data-bg]:not([data-o])');
+ if(!('IntersectionObserver'in window)){els.forEach(function(d){d.setAttribute('data-o','1');lzset(d);});return;}
+ if(reset||!_io){if(_io)_io.disconnect();_io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){lzset(e.target);_io.unobserve(e.target);}});},{rootMargin:'400px'});}
+ els.forEach(function(d){d.setAttribute('data-o','1');_io.observe(d);});}
+var _uo;function lazyUpd(){var els=document.querySelectorAll('#md .updt[data-bg]');
+ var set=function(t){t.style.backgroundImage="url('"+t.getAttribute('data-bg')+"')";t.removeAttribute('data-bg');};
+ if(_uo){_uo.disconnect();_uo=null;}if(!('IntersectionObserver'in window)){els.forEach(set);return;}
+ _uo=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){set(e.target);_uo.unobserve(e.target);}});},{rootMargin:'300px'});els.forEach(function(e){_uo.observe(e);});}
 var _log=[],_calM=null,_curDay='';
-function updBy(){var by={};ITEMS.forEach(function(x){(by[x.added]=by[x.added]||[]).push(x);});return by;}
+var _byC=null;function updBy(){if(_byC)return _byC;var by={};ITEMS.forEach(function(x){(by[x.added]=by[x.added]||[]).push(x);});return _byC=by;}
 function openUpd(){var dates=Object.keys(updBy()).sort();if(!_calM){var mx=dates.slice(-1)[0]||'2026-06-28';_calM=new Date(+mx.slice(0,4),+mx.slice(5,7)-1,1);}renderCal();}
 function calMove(n){_calM=new Date(_calM.getFullYear(),_calM.getMonth()+n,1);renderCal();}
 function renderCal(){var by=updBy();var y=_calM.getFullYear(),m=_calM.getMonth();
@@ -21209,8 +21227,8 @@ function renderCal(){var by=updBy();var y=_calM.getFullYear(),m=_calM.getMonth()
  document.getElementById('md').innerHTML=h;document.getElementById('modal').style.display='flex';}
 function showDay(dt){_curDay=dt;var items=(updBy()[dt]||[]).slice().sort(function(a,b){return (b.imp||b.views||0)-(a.imp||a.views||0);});_log=[];
  var h='<div class="mdh"><div><div class="mdt">📅 '+dt+'</div><div class="mdm">이 날 추가된 소재 '+items.length+'건</div></div><button class="mx" onclick="renderCal()">← 달력</button></div><div class="updg">';
- h+=items.map(function(x){var i=_log.push(x)-1;return '<div class="updc" onclick="playLog('+i+')" title="'+x.disp+'"><div class="updt" style="background-image:url(\''+x.th+'\')">'+((x.kind==='yt'||x.kind==='vid')?'▶':'📷')+'</div><div class="updn">'+x.disp+'</div></div>';}).join('');
- h+='</div>';document.getElementById('md').innerHTML=h;}
+ h+=items.map(function(x){var i=_log.push(x)-1;return '<div class="updc" onclick="playLog('+i+')" title="'+x.disp+'"><div class="updt" data-bg="'+x.th+'">'+((x.kind==='yt'||x.kind==='vid')?'▶':'📷')+'</div><div class="updn">'+x.disp+'</div></div>';}).join('');
+ h+='</div>';document.getElementById('md').innerHTML=h;lazyUpd();}
 function playLog(i){var x=_log[i];if(x.kind==='yt'&&x.vid){window.open('https://www.youtube.com/watch?v='+x.vid,'_blank','noopener');return;}
  var inner=x.kind==='vid'?'<video src="'+x.th.replace(/\.frame\.[\d.]+\.jpg$/,'')+'" controls autoplay playsinline></video>':'<img src="'+x.th+'"><div class="mnote">'+(x.kind==='img'?'📷 이미지 광고':'유튜브 영상 소재')+'</div>';
  document.getElementById('md').innerHTML='<div class="mdh"><div><div class="mdt">'+x.disp+'</div><div class="mdm">'+x.title+' · '+x.date+'</div></div><button class="mx" onclick="showDay(\''+_curDay+'\')">← 목록</button></div>'+inner;}
